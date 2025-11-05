@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from database import SessionLocal
+from sqlalchemy import text
 
 app = FastAPI()
 
@@ -13,3 +15,14 @@ def read_item(item_id: int, q: str = None):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+@app.on_event("startup")
+def startup():
+    db = SessionLocal()
+    try:
+        db.execute(text("SELECT 1"))
+        # サーバ起動時にコンソールにメッセージを表示できる。
+        print("✓ Database connected successfully!")
+    finally:
+        db.close()
