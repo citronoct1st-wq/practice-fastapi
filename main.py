@@ -1,34 +1,27 @@
 from fastapi import FastAPI
-from database import SessionLocal
+from database import engine, Base, SessionLocal
 from sqlalchemy import text
+from routers import users  # ← ルータをインポート
 
-from fastapi import FastAPI
-from database import engine, Base
-from models import User
-
-# アプリケーション起動時にテーブルを自動生成
+# テーブル自動生成
 Base.metadata.create_all(bind=engine)
-app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello, Docker + FastAPI!"}
+# FastAPI アプリケーション作成
+app = FastAPI(
+    title="User Management API",
+    description="ユーザー管理API",
+    version="1.0.0"
+)
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+# ルータを登録（エンドポイントを組み込む）
+app.include_router(users.router)
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-
-
+# DB接続確認（起動時実行）
 @app.on_event("startup")
 def startup():
     db = SessionLocal()
     try:
         db.execute(text("SELECT 1"))
-        # サーバ起動時にコンソールにメッセージを表示できる。
         print("✓ Database connected successfully!")
     finally:
         db.close()
