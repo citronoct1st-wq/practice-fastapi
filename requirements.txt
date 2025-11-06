@@ -5,3 +5,4 @@ python-dotenv==1.0.0
 sqlalchemy==2.0.23          # ORM フレームワーク
 psycopg2-binary==2.9.9      # PostgreSQL用ドライバー
 alembic==1.12.1             # マイグレーションツール（オプション）
+pydantic[email]

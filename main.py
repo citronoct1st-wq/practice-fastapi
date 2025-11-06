@@ -2,6 +2,12 @@ from fastapi import FastAPI
 from database import SessionLocal
 from sqlalchemy import text
 
+from fastapi import FastAPI
+from database import engine, Base
+from models import User
+
+# アプリケーション起動時にテーブルを自動生成
+Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 @app.get("/")
