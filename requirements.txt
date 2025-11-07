@@ -6,3 +6,7 @@ sqlalchemy==2.0.23          # ORM フレームワーク
 psycopg2-binary==2.9.9      # PostgreSQL用ドライバー
 alembic==1.12.1             # マイグレーションツール（オプション）
 pydantic[email]
+bcrypt==4.1.1               # パスワードハッシング
+passlib==1.7.4              # パスワードコンテキスト
+python-jose==3.3.0          # JWT生成
+python-multipart==0.0.6     # フォームデータ処理
